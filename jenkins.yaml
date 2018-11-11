@@ -1,0 +1,68 @@
+jenkins:
+  systemMessage: "Jenkins Configuration as Code Starter"
+  mode: NORMAL
+  numExecutors: 2
+  agentProtocols:
+    - "JNLP4-connect"
+    - "Ping"
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  disableRememberMe: false
+  scmCheckoutRetryCount: 0
+  projectNamingStrategy: "standard"
+  markupFormatter: "plainText"
+  slaveAgentPort: 50000
+  myViewsTabBar: "standard"
+  viewsTabBar: "standard"
+
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+      users:
+        - id: admin
+          password: admin
+        - id: user
+          password: ""
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              scope: GLOBAL
+              id: "username"
+              username: "some-user"
+              password: "some-user"
+              description: "Credentials for some-user"
+
+jobs:
+  - script: >
+      multibranchPipelineJob('configuration-as-code') {
+          branchSources {
+              git {
+                  id = 'configuration-as-code'
+                  remote('https://github.com/jenkinsci/configuration-as-code-plugin.git')
+              }
+          }
+      }
+
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+
+unclassified:
+  globalLibraries:
+    libraries:
+      - name: "sap-jenkins-library"
+        implicit: true
+        defaultVersion: "master"
+        allowVersionOverride: true
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                remote: "https://github.com/SAP/jenkins-library.git"
