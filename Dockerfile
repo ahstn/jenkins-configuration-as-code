@@ -13,7 +13,7 @@ COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 COPY download-plugins.sh /usr/local/bin/download-plugins.sh
 RUN /usr/local/bin/download-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
-COPY init_scripts/src/main/groovy/ /usr/share/jenkins/ref/init.groovy.d/
+COPY init-scripts/src/main/groovy/ /usr/share/jenkins/ref/init.groovy.d/
 
 RUN mkdir -p ${LOCAL_PIPELINE_LIBRARY_PATH}
 

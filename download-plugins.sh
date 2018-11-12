@@ -237,8 +237,12 @@ main() {
     done
     wait
 
-    echo -e "WAR bundled plugins: \n${bundledPlugins}"
-    echo -e "Installed plugins: \n$(installedPlugins)"
+    echo
+    echo "WAR bundled plugins:"
+    echo "${bundledPlugins}"
+    echo
+    echo "Installed plugins:"
+    installedPlugins
 
     if [[ -f $FAILED ]]; then
         echo "Some plugins failed to download!" "$(<"$FAILED")" >&2
