@@ -15,7 +15,21 @@ jenkins:
   slaveAgentPort: 50000
   myViewsTabBar: "standard"
   viewsTabBar: "standard"
-
+  clouds:
+    - docker:
+        name: "docker"
+        dockerApi:
+          dockerHost:
+            uri: "tcp://172.17.0.1:2376"
+        templates:
+          - labelString: "docker-agent"
+            dockerTemplateBase:
+              image: "jenkins/jnlp-slave:3.27-1-alpine"
+            remoteFs: "/home/jenkins/agent"
+            connector:
+              attach:
+                user: "jenkins"
+            instanceCapStr: "10"
   securityRealm:
     local:
       allowsSignup: false

@@ -17,6 +17,14 @@ Run image:
 docker run --rm -e DEV_HOST=$CURRENT_HOST -p 8080:8080 -p 50000:50000 ahstn/jsasc
 ```
 
+A Docker TCP host endpoint is required for local development, so Jenkins can
+schedule build agents.
+
+When using Docker for Mac you can expose a Docker TCP host using socat:
+```
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 2376:2375 bobrik/socat TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock
+```
+
 #### Developing Pipeline libraries
 In the _Development_ folder there is a _PipelineLib_ folder, which allows local building and testing of the library.
 This folder can be mapped to a local repository in order to develop the library without committing changes:
