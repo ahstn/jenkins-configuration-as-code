@@ -42,6 +42,20 @@ services:
     networks:
       - frontend
 
+  vault:
+    image: vault:0.11.5
+    restart: unless-stopped
+    ports:
+      - 8200:8200   # Expose api and web ui
+    environment:
+      VAULT_UI: 'true'
+      VAULT_DEV_ROOT_TOKEN_ID: insecure-dev
+      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - frontend
+
 networks:
   backend:
     driver: overlay
