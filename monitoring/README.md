@@ -12,3 +12,7 @@ docker run --rm --name=grafana -p 3000:3000 -p 9090 -v $(pwd)/monitoring/grafana
 Open [http://localhost:9090/config](http://localhost:9090/config) to confirm the
 config is as expected, then you should be able to run queries like:
 `javamelody_http_hits_count`.
+
+Grafana will be hosted on [http://localhost:3000](http://localhost:3000) and after
+making a user account, you will be able to see the auto-provisioned Jenkins
+dashboard.
