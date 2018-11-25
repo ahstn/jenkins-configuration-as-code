@@ -22,11 +22,11 @@ scrape_configs:
     params:
       format: ['prometheus']
     static_configs:
-      - targets: ['172.17.0.1:8080']
+      - targets: ['master:8080']
 
   # Prometheus Plugin - https://plugins.jenkins.io/prometheus
   - job_name: 'jenkins'
     scheme: http
     metrics_path: '/prometheus'
     static_configs:
-      - targets: ['172.17.0.1:8080']
+      - targets: ['master:8080']
