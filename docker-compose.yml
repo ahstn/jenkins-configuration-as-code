@@ -19,7 +19,7 @@ services:
     hostname: prometheus
     image: prom/prometheus:v2.5.0
     restart: unless-stopped
-    ports:
+    ports:          # Might be better as 'expose' instead of 'ports'
       - 9090:9090   # Expose metrics and web ui
       - 8080        # Allow outgoing connection to Jenkins
     volumes:
@@ -44,6 +44,6 @@ services:
 
 networks:
   backend:
-    driver: bridge
+    driver: overlay
   frontend:
-    driver: bridge
+    driver: overlay
