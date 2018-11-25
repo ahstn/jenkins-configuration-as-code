@@ -11,31 +11,21 @@ alerting:
     - targets:
       # - alertmanager:9093
 
-# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
-rule_files:
-  # - "first_rules.yml"
-  # - "second_rules.yml"
-
-# A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
+# A scrape configuration containing exactly one endpoint to scrape.
+# In our case we have two jobs: jvm stats and general jenkins metrics
+# The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
-    static_configs:
-    - targets: ['localhost:9090']
-
-  - job_name: 'jenkins'
+  # Monitoring Plugin with JavaMelody - https://plugins.jenkins.io/monitoring
+  - job_name: 'jenkins-jvm'
     scheme: http
     metrics_path: '/monitoring'
     params:
       format: ['prometheus']
     static_configs:
       - targets: ['172.17.0.1:8080']
-    # basic_auth if the parameter authorized-users is used
-    # basic_auth:
-    #   username: my_username
-    #   password: my_plain_text_password_here
-  - job_name: 'jenkins-prom'
+
+  # Prometheus Plugin - https://plugins.jenkins.io/prometheus
+  - job_name: 'jenkins'
     scheme: http
     metrics_path: '/prometheus'
     static_configs:
