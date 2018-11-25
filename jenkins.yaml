@@ -20,7 +20,7 @@ jenkins:
         name: "docker"
         dockerApi:
           dockerHost:
-            uri: "tcp://172.17.0.1:2376"
+            uri: ${DOCKER_HOST:-unix:///var/run/docker.sock}
         templates:
           - labelString: "docker-agent"
             dockerTemplateBase:
