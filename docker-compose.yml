@@ -1,0 +1,49 @@
+---
+version: '3.2'
+
+services:
+  master:
+    build: .
+    image: ahstn/jenkins-casc
+    restart: unless-stopped
+    ports:
+      - 8080:8080   # Expose web ui
+      - 50000:50000 # Expose agent port
+      - 433         # Allow outgoing https connections for Jenkins Plugins
+    environment:
+      DEV_HOST: localhost
+    networks:
+      - frontend
+
+  prometheus:
+    hostname: prometheus
+    image: prom/prometheus:v2.5.0
+    restart: unless-stopped
+    ports:
+      - 9090:9090   # Expose metrics and web ui
+      - 8080        # Allow outgoing connection to Jenkins
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - jenkins
+    networks:
+      - frontend
+
+  grafana:
+    image: grafana/grafana:5.3.4
+    restart: unless-stopped
+    ports:
+      - 3000:3000   # Expose web ui
+      - 9090        # Allow outoging connecion to Prometheus
+    volumes:
+      - ./monitoring/grafana:/etc/grafana/provisioning:ro
+    depends_on:
+      - prometheus
+    networks:
+      - frontend
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    driver: bridge
