@@ -1,6 +1,13 @@
 ---
 version: '3.2'
 
+networks:
+  backend:
+    driver: overlay
+  frontend:
+    driver: overlay
+
+
 services:
   master:
     build: .
@@ -55,9 +62,3 @@ services:
       - IPC_LOCK
     networks:
       - frontend
-
-networks:
-  backend:
-    driver: overlay
-  frontend:
-    driver: overlay

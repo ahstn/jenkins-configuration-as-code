@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:2.138.2
+FROM jenkins/jenkins:2.156
 LABEL Version "1.0.0-alpha"
 
 ARG DEV_HOST=127.0.0.1
