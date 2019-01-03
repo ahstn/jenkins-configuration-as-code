@@ -7,7 +7,6 @@ networks:
   frontend:
     driver: overlay
 
-
 services:
   master:
     build: .
@@ -37,8 +36,12 @@ services:
       - frontend
 
   grafana:
-    image: grafana/grafana:5.3.4
+    image: grafana/grafana:5.4.2
     restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: 'false'
     ports:
       - 3000:3000   # Expose web ui
       - 9090        # Allow outoging connecion to Prometheus
