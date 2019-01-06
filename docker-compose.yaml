@@ -11,7 +11,6 @@ services:
   master:
     build: .
     image: ahstn/jenkins-casc:1.0.0-alpha
-    restart: unless-stopped
     ports:
       - 8080:8080   # Expose web ui
       - 50000:50000 # Expose agent port
@@ -24,7 +23,6 @@ services:
   prometheus:
     hostname: prometheus
     image: prom/prometheus:v2.5.0
-    restart: unless-stopped
     ports:          # Might be better as 'expose' instead of 'ports'
       - 9090:9090   # Expose metrics and web ui
       - 8080        # Allow outgoing connection to Jenkins
@@ -35,19 +33,37 @@ services:
     networks:
       - frontend
 
+  loki:
+    image: grafana/loki:master
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - backend
+
+  promtail:
+    image: grafana/promtail:master
+    volumes:
+      - /var/log:/var/log
+    command:
+      -config.file=/etc/promtail/docker-config.yaml
+    networks:
+      - backend
+
+  # 'master' tag requred for loki compatibility and explore feature
+  # http://docs.grafana.org/features/explore/#turning-the-explore-feature-on
   grafana:
-    image: grafana/grafana:5.4.2
-    restart: unless-stopped
+    image: grafana/grafana:master
     environment:
       GF_SECURITY_ADMIN_USER: ${ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin}
       GF_USERS_ALLOW_SIGN_UP: 'false'
+      GF_EXPLORE_ENABLED: 'true'
     ports:
       - 3000:3000   # Expose web ui
       - 9090        # Allow outoging connecion to Prometheus
     volumes:
       - ./monitoring/grafana:/etc/grafana/provisioning:ro
-    depends_on:
-      - prometheus
     networks:
+      - backend
       - frontend
