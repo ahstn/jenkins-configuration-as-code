@@ -39,7 +39,7 @@ Grafana dashboard.
 
 To run the stack:
 ```shell
-docker stack deploy -c docker-compose.yml jenkins
+docker stack deploy -c docker-compose.yaml jenkins
 ```
 If you make any changes, the command can be ran again to update the necessary
 containers.
@@ -86,9 +86,10 @@ a key to what certain emojis mean in commit messages:
 * :book: - Documentation  (`:book:`)
 
 ### Todo
- - [ ] Investigate pre-loading secrets into Vault as an alternative to Docker secrets.
- - [ ] Setup Vault to feed credentials and sensitive info to CasC.
+ - [ ] Investigate using Vault to feed credentials and sensitive info to CasC.
  - [ ] Have Prometheus and Vault on a 'backend' network so they aren't exposed like Jenkins.
+ - [ ] Add custom Loki and Promtail config.
+ - [ ] Utilise Docker Config rather than volues to prevent missed FS updates.
 
 ### Credit
 This repo was inspired by [Praqma/JenkinsAsCodeReference] and
